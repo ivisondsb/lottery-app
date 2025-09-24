@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ivisondsb.lotery.ui.theme.Green
 import com.ivisondsb.lotery.ui.theme.LoteryTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,18 +37,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LoteryTheme {
-                MainApp()
+                HomeScreen()
             }
         }
     }
 }
 
 @Composable
-fun MainApp(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier) {
     Surface(
-        modifier.fillMaxSize()
+        modifier
+            .fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        CardLottery("Lottery")
+        CardLottery("Mega Sena")
     }
 }
 
@@ -61,13 +65,13 @@ fun CardLottery(name: String, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
-                .background(Color.Green)
+                .background(Green)
                 .padding(20.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.trevo),
                 contentDescription = "Trevo",
-                modifier.size(80.dp)
+                modifier.size(100.dp)
             )
             Spacer(modifier.size(10.dp))
             Text(
@@ -85,5 +89,5 @@ fun CardLottery(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun MainAppPreview() {
-    MainApp()
+    HomeScreen()
 }
