@@ -27,6 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.ivisondsb.lotery.ui.theme.Green
 import com.ivisondsb.lotery.ui.theme.LoteryTheme
 
@@ -36,7 +39,18 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LoteryTheme {
-               HomeScreen()
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = "home"
+                ) {
+                    composable("home") {
+                        HomeScreen()
+                    }
+                    composable("lottery_form") {
+                        FormScreen()
+                    }
+                }
             }
         }
     }
