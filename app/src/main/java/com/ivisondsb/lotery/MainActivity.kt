@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LoteryTheme {
-                HomeScreen()
+               HomeScreen()
             }
         }
     }
@@ -50,6 +50,16 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.background
     ) {
         CardLottery("Mega Sena")
+    }
+}
+
+@Composable
+fun FormScreen(modifier: Modifier = Modifier) {
+    Surface(
+        modifier.fillMaxSize(),
+        color = Color.Green
+    ) {
+
     }
 }
 
@@ -92,4 +102,10 @@ fun CardLottery(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun MainAppPreview() {
     HomeScreen()
+}
+
+@Preview()
+@Composable
+private fun FormScreenPreview() {
+    FormScreen()
 }
