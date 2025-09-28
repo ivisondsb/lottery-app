@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,7 +46,9 @@ class MainActivity : ComponentActivity() {
                     startDestination = "home"
                 ) {
                     composable("home") {
-                        HomeScreen()
+                        HomeScreen {
+                            navController.navigate("lottery_form")
+                        }
                     }
                     composable("lottery_form") {
                         FormScreen()
@@ -57,13 +60,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
-        modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        CardLottery("Mega Sena")
+        CardLottery("Mega Sena", onClick = onClick)
     }
 }
 
@@ -78,10 +80,14 @@ fun FormScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CardLottery(name: String, modifier: Modifier = Modifier) {
+fun CardLottery(name: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        modifier = modifier.wrapContentSize()
+        modifier = modifier
+            .wrapContentSize()
+            .clickable {
+                onClick()
+            }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -115,7 +121,7 @@ fun CardLottery(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun MainAppPreview() {
-    HomeScreen()
+    HomeScreen { }
 }
 
 @Preview()
