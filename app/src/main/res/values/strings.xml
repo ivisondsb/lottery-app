@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">lottery</string>
+    <string name="clover">4-leaf clover</string>
+    <string name="announcement">Choose 6 to 15 numbers for the App to generate 60 numbers.
+        You win with 6, 5, or 4 correct numbers. \nTwo weekly draws are held for you to place your bet and hope to become a millionaire.</string>
+    <string name="mega_rule">6 to 15 numbers</string>
+    <string name="quantity">How many numbers are you going to bet?</string>
+    <string name="bets">Numbers of bets</string>
+    <string name="bets_quantity">How many times will you bet?</string>
+    <string name="bets_generate">Generate Bets</string>
 </resources>
