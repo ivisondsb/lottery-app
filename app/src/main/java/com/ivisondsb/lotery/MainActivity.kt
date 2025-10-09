@@ -55,20 +55,25 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = "home"
+                    startDestination = AppRouter.HOME.route
                 ) {
-                    composable("home") {
+                    composable(AppRouter.HOME.route) {
                         HomeScreen {
-                            navController.navigate("lottery_form")
+                            navController.navigate(AppRouter.FORM.route)
                         }
                     }
-                    composable("lottery_form") {
+                    composable(AppRouter.FORM.route) {
                         FormScreen()
                     }
                 }
             }
         }
     }
+}
+
+enum class AppRouter(val route: String) {
+    HOME("home"),
+    FORM("form")
 }
 
 @Composable
