@@ -77,7 +77,10 @@ fun HomeScreen(modifier: Modifier = Modifier, onClick: () -> Unit) {
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        CardLottery("Mega Sena", onClick = onClick)
+        CardLottery(
+            "Mega Sena",
+            onClick = onClick
+        )
     }
 }
 
@@ -110,7 +113,9 @@ fun FormScreen(modifier: Modifier = Modifier) {
             Text(
                 text = stringResource(R.string.announcement),
                 fontStyle = FontStyle.Italic,
-                modifier = modifier.wrapContentSize().padding(14.dp),
+                modifier = modifier
+                    .wrapContentSize()
+                    .padding(14.dp),
             )
             OutlinedTextField(
                 value = qtdNumbers,
@@ -125,12 +130,14 @@ fun FormScreen(modifier: Modifier = Modifier) {
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                onValueChange = {}
+                onValueChange = {
+                    if (it.length < 3) {
+                        qtdNumbers = validateInput(it)
+                    }
+                }
             )
             OutlinedTextField(
-                value = qtdBets,
-                maxLines = 1,
-                label = {
+                value = qtdBets, maxLines = 1, label = {
                     Text(stringResource(R.string.bets))
                 },
                 placeholder = {
@@ -140,7 +147,11 @@ fun FormScreen(modifier: Modifier = Modifier) {
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 ),
-                onValueChange = {}
+                onValueChange = {
+                    if (it.length < 3) {
+                        qtdBets = validateInput(it)
+                    }
+                }
             )
             OutlinedButton(onClick = {}) {
                 Text(stringResource(R.string.bets_generate))
@@ -169,7 +180,7 @@ fun CardLottery(name: String, onClick: () -> Unit, modifier: Modifier = Modifier
             Image(
                 painter = painterResource(R.drawable.trevo),
                 contentDescription = stringResource(R.string.clover),
-                modifier
+                modifier = modifier
                     .size(100.dp)
                     .padding(10.dp)
             )
@@ -180,13 +191,20 @@ fun CardLottery(name: String, onClick: () -> Unit, modifier: Modifier = Modifier
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 ),
-                modifier = modifier.padding(8.dp, 0.dp, 8.dp, 8.dp)
+                modifier = modifier.padding(
+                    8.dp,
+                    0.dp,
+                    8.dp,
+                    8.dp
+                )
             )
         }
     }
-
 }
 
+fun validateInput(text: String): String {
+    return text.filter { it.isDigit() }
+}
 
 @Preview(showBackground = true)
 @Composable
