@@ -38,6 +38,7 @@ import com.ivisondsb.lotery.ui.component.LoItemType
 import com.ivisondsb.lotery.ui.component.LoNumberTextField
 import com.ivisondsb.lotery.ui.theme.Green
 import com.ivisondsb.lotery.ui.theme.LoteryTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,6 +161,16 @@ fun validateInput(text: String): String {
     return text.filter { it.isDigit() }
 }
 
+fun generateNumbers(qtd: String): String {
+    val numbers = mutableSetOf<Int>()
+
+    while (numbers.size < qtd.toInt()) {
+        val n = Random.nextInt(60)
+        numbers.add(n + 1)
+    }
+
+    return numbers.joinToString(" - ")
+}
 
 @Preview(showBackground = true)
 @Composable
