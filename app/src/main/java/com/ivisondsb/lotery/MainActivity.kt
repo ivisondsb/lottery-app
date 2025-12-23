@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +17,15 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +42,7 @@ import com.ivisondsb.lotery.ui.component.LoItemType
 import com.ivisondsb.lotery.ui.component.LoNumberTextField
 import com.ivisondsb.lotery.ui.theme.Green
 import com.ivisondsb.lotery.ui.theme.LoteryTheme
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -91,6 +96,9 @@ fun FormScreen(modifier: Modifier = Modifier) {
     ) {
         var qtdNumbers by remember { mutableStateOf("") }
         var qtdBets by remember { mutableStateOf("") }
+        var result by remember { mutableStateOf("") }
+        val snackBarHostState by remember { mutableStateOf(SnackbarHostState()) }
+        val scope = rememberCoroutineScope()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,8 +115,8 @@ fun FormScreen(modifier: Modifier = Modifier) {
             )
             LoNumberTextField(
                 value = qtdNumbers,
-                label = R.string.bets,
-                placeholder = R.string.bets_quantity
+                label = R.string.mega_rule,
+                placeholder = R.string.quantity
             ) {
                 if (it.length < 3) {
                     qtdNumbers = validateInput(it)
@@ -116,8 +124,8 @@ fun FormScreen(modifier: Modifier = Modifier) {
             }
             LoNumberTextField(
                 value = qtdBets,
-                label = R.string.mega_rule,
-                placeholder = R.string.quantity,
+                label = R.string.bets,
+                placeholder = R.string.bets_quantity,
                 imeAction = ImeAction.Done
             ) {
                 if (it.length < 3) {
@@ -126,10 +134,34 @@ fun FormScreen(modifier: Modifier = Modifier) {
             }
             OutlinedButton(
                 enabled = qtdNumbers.isNotEmpty() && qtdBets.isNotEmpty(),
-                onClick = {}
+                onClick = {
+                    if (qtdBets.toInt() !in 1..10) {
+                        scope.launch {
+                            snackBarHostState.showSnackbar("Máximo número de apostas permitidas: 10")
+                        }
+                    } else if (qtdNumbers.toInt() !in 6..15) {
+                        scope.launch {
+                            snackBarHostState.showSnackbar("Números devem ser de 6 à 15")
+                        }
+                    } else {
+                        result = ""
+                        for (i in 1..qtdBets.toInt()) {
+                            result += "[$i] -> ${generateNumbers(qtdNumbers)}\n\n"
+                        }
+                    }
+                }
             ) {
                 Text(stringResource(R.string.bets_generate))
             }
+
+            Text(text = result)
+        }
+
+        Box {
+            SnackbarHost(
+                modifier = modifier.align(Alignment.BottomCenter),
+                hostState = snackBarHostState
+            )
         }
     }
 }
