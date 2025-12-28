@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -99,6 +100,7 @@ fun FormScreen(modifier: Modifier = Modifier) {
         var result by remember { mutableStateOf("") }
         val snackBarHostState by remember { mutableStateOf(SnackbarHostState()) }
         val scope = rememberCoroutineScope()
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -135,20 +137,24 @@ fun FormScreen(modifier: Modifier = Modifier) {
             OutlinedButton(
                 enabled = qtdNumbers.isNotEmpty() && qtdBets.isNotEmpty(),
                 onClick = {
-                    if (qtdBets.toInt() !in 1..10) {
+                    val bets = qtdBets.toInt()
+                    val numbers = qtdNumbers.toInt()
+
+                    if (bets !in 1..10) {
                         scope.launch {
                             snackBarHostState.showSnackbar("Máximo número de apostas permitidas: 10")
                         }
-                    } else if (qtdNumbers.toInt() !in 6..15) {
+                    } else if (numbers !in 6..15) {
                         scope.launch {
                             snackBarHostState.showSnackbar("Números devem ser de 6 à 15")
                         }
                     } else {
                         result = ""
-                        for (i in 1..qtdBets.toInt()) {
-                            result += "[$i] -> ${generateNumbers(qtdNumbers)}\n\n"
+                        for (i in 1..bets) {
+                            result += "[$i] -> ${generateNumbers(numbers)}\n\n"
                         }
                     }
+                    keyboardController?.hide()
                 }
             ) {
                 Text(stringResource(R.string.bets_generate))
@@ -193,10 +199,10 @@ fun validateInput(text: String): String {
     return text.filter { it.isDigit() }
 }
 
-fun generateNumbers(qtd: String): String {
+fun generateNumbers(qtd: Int): String {
     val numbers = mutableSetOf<Int>()
 
-    while (numbers.size < qtd.toInt()) {
+    while (numbers.size < qtd) {
         val n = Random.nextInt(60)
         numbers.add(n + 1)
     }
