@@ -8,4 +8,6 @@
     <string name="bets">Numbers of bets</string>
     <string name="bets_quantity">How many times will you bet?</string>
     <string name="bets_generate">Generate Bets</string>
+    <string name="error_bets">Maximum number of bets allowed is 10</string>
+    <string name="error_numbers">Please enter numbers between 6 and 15</string>
 </resources>

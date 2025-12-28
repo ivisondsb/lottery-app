@@ -102,6 +102,9 @@ fun FormScreen(modifier: Modifier = Modifier) {
         val scope = rememberCoroutineScope()
         val keyboardController = LocalSoftwareKeyboardController.current
 
+        val errorBets = stringResource(R.string.error_bets)
+        val errorNumbers = stringResource(R.string.error_numbers)
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -142,11 +145,11 @@ fun FormScreen(modifier: Modifier = Modifier) {
 
                     if (bets !in 1..10) {
                         scope.launch {
-                            snackBarHostState.showSnackbar("Máximo número de apostas permitidas: 10")
+                            snackBarHostState.showSnackbar(errorBets)
                         }
                     } else if (numbers !in 6..15) {
                         scope.launch {
-                            snackBarHostState.showSnackbar("Números devem ser de 6 à 15")
+                            snackBarHostState.showSnackbar(errorNumbers)
                         }
                     } else {
                         result = ""
