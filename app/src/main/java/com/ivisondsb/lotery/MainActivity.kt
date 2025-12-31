@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -101,13 +103,15 @@ fun FormScreen(modifier: Modifier = Modifier) {
         val snackBarHostState by remember { mutableStateOf(SnackbarHostState()) }
         val scope = rememberCoroutineScope()
         val keyboardController = LocalSoftwareKeyboardController.current
+        val scrollState = rememberScrollState()
 
         val errorBets = stringResource(R.string.error_bets)
         val errorNumbers = stringResource(R.string.error_numbers)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = modifier.verticalScroll(scrollState)
         ) {
             Spacer(modifier.size(20.dp))
             LoItemType(name = "Mega Sena")
